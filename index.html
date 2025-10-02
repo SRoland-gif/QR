@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>QR lista</title>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+  <h2>QR kód olvasás</h2>
+  <div id="reader" style="width:300px;"></div>
+
+  <h3>Beolvasott tételek</h3>
+  <textarea id="list" rows="15" cols="40" readonly></textarea><br>
+  <button onclick="copyList()">Másolás vágólapra</button>
+
+  <script>
+    function onScanSuccess(decodedText, decodedResult) {
+      const list = document.getElementById("list");
+      list.value += decodedText + "\n";   // új sorba írja a tartalmat
+    }
+
+    const html5QrCode = new Html5Qrcode("reader");
+    html5QrCode.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: 250 },
+      onScanSuccess
+    );
+
+    function copyList(){
+      const list = document.getElementById("list");
+      list.select();
+      document.execCommand("copy");
+      alert("Kimásolva a vágólapra!");
+    }
+  </script>
+</body>
+</html>
